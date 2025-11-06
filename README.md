@@ -5,6 +5,7 @@ A machine learning project that classifies different animal sounds (e.g., dog, c
 ---
 
 ## 📂 Project Structure
+
 animal-sound-classifier/
 ├── data/
 │ ├── raw/ # original audio files or dataset CSVs
@@ -18,8 +19,8 @@ animal-sound-classifier/
 │ ├── evaluate.py
 │ └── predict.py
 ├── models/ # saved models / checkpoints
-├── requirements.txt
 ├── tests/
+├── requirements.txt
 └── README.md
 
 yaml
