@@ -1,0 +1,31 @@
+# python ignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+*.egg-info/
+.env/
+venv/
+.ipynb_checkpoints/
+
+# data
+data/raw/
+data/processed/
+data/ESC-50-master/
+
+# models and logs
+models/
+logs/
+checkpoints/
+
+# system
+.DS_Store
+.vscode/
+.idea/
+
+# temp files
+*.tmp
+*.bak
+*.swp
