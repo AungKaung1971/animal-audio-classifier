@@ -18,6 +18,9 @@ print(f"shape of data frame: {df.shape}")
 animals = ["dog", "rooster", "pig", "cow",
            "frog", "cat", "hen", "sheep", "crow"]
 
+not_animals = ["rain", "sea_waves", "pouring_water",
+               "thunderstorm", "crying_baby", "sneeezing", "clapping", "water_drops", "breathing", "coughing"]
+
 for animal in animals:
     os.makedirs(f"{dest_path}/{animal}", exist_ok=True)
     files = df[df["category"] == animal]["filename"]
@@ -25,4 +28,12 @@ for animal in animals:
         shutil.copy(os.path.join(audio, fname),
                     f"{dest_path}/{animal}/{fname}")
 
-print("Finshed Copying Animal Sounds from ESC-50!")
+os.makedirs("data/raw/not_animals", exist_ok=True)
+
+for not_animal in not_animals:
+    files = df[df["category"] == not_animal]["filename"]
+    for fname in files:
+        shutil.copy(os.path.join(audio, fname),
+                    f"{dest_path}/not_animals/{fname}")
+
+print("Finshed Copying Animal Sounds from ESC-50")
