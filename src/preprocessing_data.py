@@ -15,7 +15,7 @@ def convert_to_input(y, target_length):
         y = np.pad(y, (0, target_length - len(y)))
     else:
         y = y[:target_length]
-        return y
+    return y
 
 
 # resample audio function
@@ -35,16 +35,27 @@ def low_pass_filter(data, cutoff_freq, sample_rate, order=4):
     return filtered_data
 
 
+def normalize_audio(y):
+    y = y/np.max(np.abs(y))
+    return y
+
+
 master_path = "data/raw"
 
 for root, dirs, files in os.walk(master_path):
     for file in files:
         if file.endswith((".wav")):
             full_path = os.path.join(root, file)
+
             y, sr = resample_audio(full_path)
             print(f"{file} >>> resampled at {sr}Hz")
 
-filtered_audio = low_pass_filter(y, cutoff_freq=4000, sample_rate=sr)
+            y = low_pass_filter(y, cutoff_freq=4000, sample_rate=sr)
 
-model_input = convert_to_input(filtered_audio, target_length=16000)
-print(f"Model input shape: {model_input.shape}")
+            y = normalize_audio(y)
+
+            model_input = convert_to_input(y, target_length=sr*5)
+
+            print(f"{file} processed to shape >>> {model_input.shape}")
+
+# saving preprocessed files into data/processed
