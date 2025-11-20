@@ -1,32 +1,30 @@
 Animal Sound Classifier
 
-A machine learning pipeline for classifying animal sounds using audio preprocessing, feature extraction, model training, and evaluation.
-This project is designed for hands-on learning, with simple, modular Python scripts and Jupyter notebooks.
+A machine learning pipeline for classifying animal sounds using audio preprocessing, feature extraction, model training, and evaluation. This project is designed for hands-on learning, with simple, modular Python scripts and Jupyter notebooks.
 
 📁 Project Structure
 animal-sound-classifier/
-│
 ├── data/
-│   ├── raw/               # Unprocessed audio files and dataset metadata
-│   ├── processed/         # Cleaned & normalized audio
-│   └── README.md          # Data sources + preprocessing notes
+│   ├── raw/               # unprocessed audio files and dataset metadata
+│   ├── processed/         # cleaned & normalized audio
+│   └── README.md          # data sources + preprocessing notes
 │
 ├── notebooks/
-│   └── 01-data-exploration.ipynb  # For initial dataset inspection
+│   └── 01-data-exploration.ipynb
 │
 ├── src/
 │   ├── __init__.py
-│   ├── data_processing.py # Audio cleaning, augmentation, feature extraction
-│   ├── model.py           # Model definitions (CNN, etc.)
-│   ├── train.py           # Training loop
-│   ├── evaluate.py        # Evaluation & confusion matrix
-│   └── predict.py         # Predict labels for new audio
+│   ├── data_processing.py # audio cleaning, augmentation, feature extraction
+│   ├── model.py           # model definitions (CNN, etc.)
+│   ├── train.py           # training loop
+│   ├── evaluate.py        # evaluation & confusion matrix
+│   └── predict.py         # inference on new audio
 │
 ├── models/
-│   └── best_model.pth     # Saved PyTorch model
+│   └── best_model.pth
 │
 ├── tests/
-│   └── test_data_processing.py    # Unit tests (optional)
+│   └── test_data_processing.py
 │
 ├── requirements.txt
 ├── README.md
@@ -48,114 +46,74 @@ Evaluation with metrics & confusion matrix
 
 Inference on new sound samples
 
-This repo is structured to follow best practices in ML engineering.
-
-🛠️ Setup Instructions
+🛠️ Setup
 1. Clone the Repository
 git clone https://github.com/your-username/animal-sound-classifier.git
 cd animal-sound-classifier
 
-2. Create a Virtual Environment (optional but recommended)
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
-venv\Scripts\activate     # Windows
-
-3. Install Dependencies
+2. Install Dependencies
 pip install -r requirements.txt
 
 🎧 Data
 
-Place your audio dataset inside:
+Put raw audio files into:
 
 data/raw/
 
 
-After preprocessing, cleaned data will appear in:
+Preprocessed audio will be written to:
 
 data/processed/
 
 
-You can document your dataset sources inside:
+Dataset source info lives in:
 
 data/README.md
 
 📊 Notebooks
 
-Use Jupyter to explore and understand your data:
+To explore the dataset:
 
 jupyter notebook notebooks/01-data-exploration.ipynb
 
-🧩 Code Modules
-🔹 data_processing.py
+🧩 Code Modules Overview
 
-Audio loading
+data_processing.py
 
-Noise reduction
+audio loading
 
-MFCC extraction
+trimming, normalization
 
-Spectrogram generation
+augmentation
 
-Normalization
+MFCC & spectrogram extraction
 
-Data augmentation
+model.py
 
-🔹 model.py
+CNN model architectures
 
-CNN architectures for audio classification
+train.py
 
-Helper functions for building PyTorch models
+training loop
 
-🔹 train.py
+saving checkpoints
 
-Training loop
+evaluate.py
 
-Data loaders
+metrics
 
-Loss functions & optimizers
+confusion matrix
 
-Model checkpoint saving
+predict.py
 
-🔹 evaluate.py
+run inference on new .wav files
 
-Accuracy, precision, recall, F1
-
-Confusion matrix visualization
-
-🔹 predict.py
-
-Load trained model
-
-Run inference on new audio file
-
-Output predicted label
-
-🏋️ Training the Model
-
-Example training command:
-
+🏋️ Training
 python src/train.py --epochs 20 --batch-size 32 --lr 0.001
 
-
-Your best model will be saved in:
-
-/models/best_model.pth
-
-🔍 Running Inference
+🔍 Inference
 python src/predict.py --audio path/to/file.wav
-
-🧪 Testing
-
-If using unit tests:
-
-pytest
 
 📄 License
 
-This project is licensed under the MIT License.
-Feel free to use, modify, and distribute.
-
-🤝 Contributing
-
-Feel free to open issues or submit pull requests!
-This project is designed for personal learning, so improvements are welcome.
+MIT License.
