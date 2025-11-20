@@ -31,7 +31,7 @@ for animal in animals:
 os.makedirs("data/raw/not_animals", exist_ok=True)
 
 for not_animal in not_animals:
-    files = df[df["category"] == not_animal]["filename"]
+    files = df[df["category"] == not_animal]["filename"][:4]
     for fname in files:
         shutil.copy(os.path.join(audio, fname),
                     f"{dest_path}/not_animals/{fname}")

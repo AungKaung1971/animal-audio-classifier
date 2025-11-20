@@ -23,16 +23,16 @@ def resample_audio(full_path, target_sr=16000):
     y, sr = librosa.load(full_path, sr=target_sr)
     return y, sr
 
-# low pass filter function
+# # low pass filter function
 
 
-def low_pass_filter(data, cutoff_freq, sample_rate, order=4):
-    nyquist = 0.5 * sample_rate
-    normal_cutoff = cutoff_freq / nyquist
-    b, a = butter(order, normal_cutoff, btype='low', analog=False)
-    filtered_data = filtfilt(b, a, data)
-    print(f"Filtered audio shape: {filtered_data.shape}")
-    return filtered_data
+# def low_pass_filter(data, cutoff_freq, sample_rate, order=4):
+#     nyquist = 0.5 * sample_rate
+#     normal_cutoff = cutoff_freq / nyquist
+#     b, a = butter(order, normal_cutoff, btype='low', analog=False)
+#     filtered_data = filtfilt(b, a, data)
+#     print(f"Filtered audio shape: {filtered_data.shape}")
+#     return filtered_data
 
 
 def normalize_audio(y):
@@ -40,9 +40,21 @@ def normalize_audio(y):
     return y
 
 
-def extract_mfcc(y, sr, n_mfcc=40):
-    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
-    return mfcc
+# def extract_mfcc(y, sr, n_mfcc=40):
+#     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+#     return mfcc
+
+
+def extract_mel_spectrogram(y, sr, n_mels=128, n_fft=1024, hop_length=128):
+    mel = librosa.feature.melspectrogram(
+        y=y,
+        sr=sr,
+        n_fft=n_fft,
+        hop_length=hop_length,
+        n_mels=n_mels
+    )
+    mel_db = librosa.power_to_db(mel, ref=np.max)
+    return mel_db
 
 
 master_path = "data/raw"
@@ -62,15 +74,17 @@ for root, dirs, files in os.walk(master_path):
             y, sr = resample_audio(full_path)
             print(f"{file} >>> resampled at {sr}Hz")
 
-            y = low_pass_filter(y, cutoff_freq=4000, sample_rate=sr)
-
             y = normalize_audio(y)
 
             y = convert_to_input(y, target_length=sr * 5)
 
-            mfcc = extract_mfcc(y, sr)
+            # mfcc = extract_mfcc(y, sr)
+
+            mel = extract_mel_spectrogram(y, sr)
 
             out_path = os.path.join(class_out, file.replace(".wav", ".npy"))
-            np.save(out_path, mfcc)
+            # np.save(out_path, mfcc) *if you want mfcc
+            np.save(out_path, mel)
 
-            print(f"{file} saved → {out_path} | MFCC shape {mfcc.shape}")
+            # print(f"{file} saved → {out_path} | MFCC shape {mfcc.shape}")
+            print(f"{file} saved -> {out_path} | mel shape {mel.shape}")

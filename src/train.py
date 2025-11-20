@@ -1,3 +1,4 @@
+from collections import Counter
 import os
 import numpy as np
 import torch
@@ -14,13 +15,9 @@ from models import create_model
 #   Dataset for MFCC features
 # ===============================
 
-class MFCCDataset(Dataset):
+class SpectrogramDataset(Dataset):
     def __init__(self, root_dir, classes):
-        self.root_dir = root_dir
-        self.classes = classes
         self.files = []
-
-        # Collect all paths + labels
         for idx, cls in enumerate(classes):
             folder = os.path.join(root_dir, cls)
             for f in os.listdir(folder):
@@ -32,10 +29,12 @@ class MFCCDataset(Dataset):
 
     def __getitem__(self, idx):
         file_path, label = self.files[idx]
-        mfcc = np.load(file_path)          # shape (40, 500)
-        mfcc = torch.tensor(mfcc, dtype=torch.float32)
-        mfcc = mfcc.unsqueeze(0)           # (1, 40, 500)
-        return mfcc, label
+
+        spec = np.load(file_path)              # <-- SPECTROGRAM
+        spec = torch.tensor(spec, dtype=torch.float32)
+        spec = spec.unsqueeze(0)               # (1, 128, 157)
+
+        return spec, label
 
 
 # ===============================
@@ -49,8 +48,12 @@ classes = [
 
 num_classes = len(classes)
 
-dataset = MFCCDataset("data/processed", classes)
-k = 10
+dataset = SpectrogramDataset("data/processed", classes)
+
+print("Class distribution:", Counter([label for _, label in dataset.files]))
+
+
+k = 5
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -141,3 +144,7 @@ os.makedirs("models", exist_ok=True)
 torch.save(model.state_dict(), "models/best_model.pth")
 
 print("\nSaved final model → models/best_model.pth")
+
+
+# deleting processed files
+# rm -rf data/processed/*
