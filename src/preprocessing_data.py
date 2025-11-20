@@ -40,12 +40,24 @@ def normalize_audio(y):
     return y
 
 
+def extract_mfcc(y, sr, n_mfcc=40):
+    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+    return mfcc
+
+
 master_path = "data/raw"
+save_root = "data/processed"
+
+os.makedirs(save_root, exist_ok=True)
 
 for root, dirs, files in os.walk(master_path):
     for file in files:
-        if file.endswith((".wav")):
+        if file.endswith(".wav"):
             full_path = os.path.join(root, file)
+
+            class_name = os.path.basename(root)
+            class_out = os.path.join(save_root, class_name)
+            os.makedirs(class_out, exist_ok=True)
 
             y, sr = resample_audio(full_path)
             print(f"{file} >>> resampled at {sr}Hz")
@@ -54,8 +66,11 @@ for root, dirs, files in os.walk(master_path):
 
             y = normalize_audio(y)
 
-            model_input = convert_to_input(y, target_length=sr*5)
+            y = convert_to_input(y, target_length=sr * 5)
 
-            print(f"{file} processed to shape >>> {model_input.shape}")
+            mfcc = extract_mfcc(y, sr)
 
-# saving preprocessed files into data/processed
+            out_path = os.path.join(class_out, file.replace(".wav", ".npy"))
+            np.save(out_path, mfcc)
+
+            print(f"{file} saved → {out_path} | MFCC shape {mfcc.shape}")
