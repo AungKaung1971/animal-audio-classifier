@@ -13,7 +13,7 @@ class AudioCNN(nn.Module):
 
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
 
-        self.fc1 = nn.Linear(32 * 10 * 125, 128)
+        self.fc1 = nn.Linear(32 * 10 * 39, 128)
         self.fc2 = nn.Linear(128, num_classes)
 
     def forward(self, x):
