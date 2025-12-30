@@ -37,3 +37,7 @@ for not_animal in not_animals:
                     f"{dest_path}/not_animals/{fname}")
 
 print("Finshed Copying Animal Sounds from ESC-50")
+
+
+# resetting data/raw
+# rm -rf data/raw/*
