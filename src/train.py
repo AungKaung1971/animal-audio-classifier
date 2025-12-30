@@ -11,10 +11,6 @@ from sklearn.model_selection import KFold
 from models import create_model
 
 
-# ===============================
-#   Dataset for MFCC features
-# ===============================
-
 class SpectrogramDataset(Dataset):
     def __init__(self, root_dir, classes):
         self.files = []
@@ -30,16 +26,12 @@ class SpectrogramDataset(Dataset):
     def __getitem__(self, idx):
         file_path, label = self.files[idx]
 
-        spec = np.load(file_path)              # <-- SPECTROGRAM
+        spec = np.load(file_path)
         spec = torch.tensor(spec, dtype=torch.float32)
-        spec = spec.unsqueeze(0)               # (1, 128, 157)
+        spec = spec.unsqueeze(0)
 
         return spec, label
 
-
-# ===============================
-#     CLASS NAMES (edit here)
-# ===============================
 
 classes = [
     "cat", "cow", "crow", "dog", "frog",
@@ -61,9 +53,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 fold_accuracies = []
 
 
-# ===============================
-#           TRAINING
-# ===============================
 def train_one_fold(train_idx, val_idx, fold):
 
     print(f"\n========== Fold {fold+1} / {k} ==========")
@@ -119,17 +108,11 @@ def train_one_fold(train_idx, val_idx, fold):
     return model, accuracy
 
 
-# ===============================
-#      RUN 10-FOLD TRAINING
-# ===============================
-
 for fold, (train_idx, val_idx) in enumerate(kf.split(dataset)):
     model, acc = train_one_fold(train_idx, val_idx, fold)
     fold_accuracies.append(acc)
 
-# ===============================
-#      FINAL RESULTS + SAVE
-# ===============================
+
 avg_acc = sum(fold_accuracies) / k
 print("====================================")
 print("K-FOLD CROSS VALIDATION RESULTS")
