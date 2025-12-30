@@ -219,6 +219,21 @@ The inference pipeline applies the same preprocessing steps used during training
 
 * * *
 
+## Results
+
+Model performance was evaluated using 5-fold cross-validation on the processed ESC-50 subset.
+
+- Mean validation accuracy: **~74%**
+- Fold-to-fold accuracy range: **~71% – 78%**
+- Metric: validation accuracy
+- Evaluation setting: 10-class classification (9 animal classes + `not_animals`)
+
+Variation across folds reflects differences in class composition and the heterogeneity of the aggregated `not_animals` class.
+
+Given the absence of data augmentation, pretrained models, and extensive hyperparameter tuning, this performance is consistent with expectations for a CNN trained from scratch on log-mel spectrogram features.
+
+***
+
 ## Known Limitations and Suggested Improvements
 
 # 
